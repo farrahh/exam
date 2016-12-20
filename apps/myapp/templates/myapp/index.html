@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<!Doctype html>
+<html>
+    <head>
+       <title>Quotes App</title>
+     </head>
+    </head>
+    <body>
+        <div class="register">
+        <!-- checking messages with flash -->
+        {% if messages %}
+        <ul class="messages">
+          {% for msg in messages %}
+          <li>
+          <div >
+          {{msg}}
+          </div>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+
+        <h3>Registration</h3>
+        <form action="/register_process" method="post">
+        {% csrf_token %}
+        <br>
+    		<input type="text" name="first_name" placeholder="First Name"><br>
+        <br>
+        <input type="text" name="last_name" placeholder="Last Name"><br>
+        <br>
+        <input type="text" name="email" placeholder="Email"><br>
+        <br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <br>
+        <input type="password" name="confirm_password" placeholder="Confirm Password"><br>
+    		<br>
+    		<input type="submit" value="Register">
+        </form>
+      </div>
+      <div class="login">
+        <h3>Login</h3>
+        <form action="/login_process" method="post">
+        {% csrf_token %}
+        <br>
+        <input type="text" name="email" placeholder="Email"><br>
+        <br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <br>
+        <input type="submit" value="Login">
+        </form>
+      </div>
+    </body>
+</html>

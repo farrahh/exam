@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!Doctype html>
+<html>
+    <head>
+       <title>Quotes</title>
+    </head>
+    <body>
+      <div id="wrapper">
+       <h2>Welcome, {{ loggedInUser.title }}!</h2><h3><a href="/quotes">Dashboard<a/> | <a href="/users/{{ request.session.id }}">Profile<a/> | <a href= "/logout">Logout</a></h3>
+      <div class="register">
+        {% for quote in allQuotes %}
+        <div class="quotes">
+          <p>{{ quote.quote }}</p>
+          <strong>- {{ quote.author }}</strong>
+          <hr>
+          <p>Posted by <a href="users/{{quote.user.id}}">{{ quote.user.first_name }}</a> on: {{ quote.created_at }} • <a href="/add_fav/{{ quote.id }}">Add to Favorites</a></p>
+        </div>
+        {%  endfor %}
+      </div>
+
+      <div class="login">
+        <h4>My Favorite Quotes</h4>
+        {% for fav in favQuotes %}
+        <div class="fav_quotes">
+          <p>{{ fav.quote.quote }}</p>
+          <strong>- {{ fav.quote.author }} • <a href="/remove_fav/{{ fav.quote.id }}">Remove from Favorites</a></strong>
+        </div>
+        {% endfor %}
+        <br>
+        <form class="" action="/add_quote" method="post">
+          {% csrf_token %}
+          <textarea name="quote" rows="8" cols="80" placeholder="Write Quote Here..."></textarea> <br>
+          <input type="text" name="author" value="" placeholder="By:"><br>
+          <input type="submit" name="" value="Submit Quote">
+        </form>
+
+
+
+      </div>
+      </div>
+    </body>
+</html>
