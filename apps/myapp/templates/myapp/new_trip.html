@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<!Doctype html>
+<html>
+    <head>
+       <title>Add Trip Page</title>
+    </head>
+    <body>
+      <div id="wrapper">
+       <h2>Welcome, {{ loggedInUser.title }}!</h2><h3><a href="/success">Dashboard<a/> | <a href= "/logout">Logout</a></h3>
+      <div class="register">
+        <form action="/add_trip" method="post">
+          {% csrf_token %}
+          <input type="text" name='destination' placeholder="Destination Name">
+          <textarea name="description" cols="80" rows="10" placeholder="Description"></textarea>
+          <input type="date" name="start_date">
+          <input type="date" name="end_date">
+          <input type="submit" value="Add Trip">
+
+        </form>
+
+      </div>
+
+      <div class="login">
+   
+      </div>
+      </div>
+    </body>
+</html>

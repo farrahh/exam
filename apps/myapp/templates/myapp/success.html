@@ -2,38 +2,30 @@
 <!Doctype html>
 <html>
     <head>
-       <title>Quotes</title>
+       <title>Trip</title>
     </head>
     <body>
       <div id="wrapper">
-       <h2>Welcome, {{ loggedInUser.title }}!</h2><h3><a href="/quotes">Dashboard<a/> | <a href="/users/{{ request.session.id }}">Profile<a/> | <a href= "/logout">Logout</a></h3>
+       <h2>Welcome, {{ loggedInUser.first_name.title }}!</h2><h3><a href="/success">Dashboard<a/> | <a href="/new_trip">Add Trip<a/> | <a href= "/logout">Logout</a></h3>
       <div class="register">
-        {% for quote in allQuotes %}
+        {% for schedule in schedule %}
         <div class="quotes">
-          <p>{{ quote.quote }}</p>
-          <strong>- {{ quote.author }}</strong>
+          <p>{{ schedule.user.first_name }} {{ schedule.user.last_name }} <a href="/destination/{{schedule.id}}"> {{ schedule.destination }}</a> {{ schedule.start_date }} {{ schedule.end_date }} {{ schedule.description}}</p>
+
+       
           <hr>
-          <p>Posted by <a href="users/{{quote.user.id}}">{{ quote.user.first_name }}</a> on: {{ quote.created_at }} • <a href="/add_fav/{{ quote.id }}">Add to Favorites</a></p>
+         
         </div>
         {%  endfor %}
+
+        <h1> Other User's Travel Plans </h1>
+        {% for trip in all_trips %}.
+        <p>{{ trip.user.first_name }} {{ trip.user.last_name }} <a href="/destination/{{trip.id}}">{{ trip.destination }}</a> {{ trip.start_date }} {{ trip.end_date }} {{ trip.description}} <a href="/join_trip/{{trip.id}}"> Join Trip</a></p>
+         {%  endfor %}
       </div>
 
       <div class="login">
-        <h4>My Favorite Quotes</h4>
-        {% for fav in favQuotes %}
-        <div class="fav_quotes">
-          <p>{{ fav.quote.quote }}</p>
-          <strong>- {{ fav.quote.author }} • <a href="/remove_fav/{{ fav.quote.id }}">Remove from Favorites</a></strong>
-        </div>
-        {% endfor %}
-        <br>
-        <form class="" action="/add_quote" method="post">
-          {% csrf_token %}
-          <textarea name="quote" rows="8" cols="80" placeholder="Write Quote Here..."></textarea> <br>
-          <input type="text" name="author" value="" placeholder="By:"><br>
-          <input type="submit" name="" value="Submit Quote">
-        </form>
-
+       
 
 
       </div>

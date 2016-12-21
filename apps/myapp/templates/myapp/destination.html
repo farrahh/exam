@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!Doctype html>
+<html>
+    <head>
+       <title>Trip</title>
+    </head>
+    <body>
+      <div id="wrapper">
+       <h2>Welcome, {{ loggedInUser.title }}!</h2><h3><a href="/success">Dashboard<a/> | <a href= "/logout">Logout</a></h3>
+      <div class="register">
+        <h3> Destination: {{destination.destination}} </h3>
+        <p> Description:  {{destination.description}} </p>
+        <p> Start Date:{{destination.start_date}} </p>
+        <p> End Date: {{destination.end_date}} </p>
+
+      </div>
+
+      <div class="login">
+      
+
+
+
+      </div>
+      </div>
+    </body>
+</html>

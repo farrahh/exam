@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
 # from . import models
-from .models import User
+from .models import User, Trip
 
 def index(request):
 	return render(request, 'myapp/index.html')
@@ -62,13 +62,77 @@ def users(request, id):
 
 def success(request):
 
-	return render(request, 'myapp/success.html')
+	if not 'id' in request.session :
+		return redirect('/')
+	else:
+		session = request.session['id']
+
+		loggedInUser = User.objects.filter(id=session)
+
+		schedule=Trip.objects.filter(participant_id=session)
+		all_trips=Trip.objects.all().exclude(participant_id=session)
+
+		context = {
+
+		'loggedInUser' : loggedInUser[0],
+		'schedule' : schedule,
+		'all_trips' : all_trips,
+
+		}
+
+		return render(request, 'myapp/success.html', context)
+
+
+def new_trip(request):
+	if not 'id' in request.session :
+		return redirect('/')
+	else:
+		session = request.session['id']
+
+		return render(request, 'myapp/new_trip.html')
+
+def add_trip(request):
+	if request.method == "POST":
+		session = request.session['id']
+		Trip.objects.add_trip(request.POST, session)
+
+		return redirect('/success')
+
+
+def destination(request, id):
+	if not 'id' in request.session :
+		return redirect('/')
+	else:
+		session = request.session['id']
+
+		destination=Trip.objects.filter(id=id)
+
+		context= {
+
+		'destination' : destination[0]
+
+		}
+
+		print destination[0].start_date
+
+		return render(request, 'myapp/destination.html', context)
+
+def join_trip(request, id):
+
+	session = request.session['id']
+	Trip.objects.join_trip(session, id)
+
+
+	return redirect('/success')
+
 
 def logout(request)	:
 	del request.session['id']
 	return redirect ('/')
 
 
-	# -------login/registration--------
 
-# Create your views here.
+
+
+
+

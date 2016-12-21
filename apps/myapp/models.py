@@ -70,6 +70,38 @@ class UserManager(models.Manager):
 			errors.append("No email found in our system, please register dude!!!")
 			return (False, errors)
 
+class TripManager(models.Manager):
+	def add_trip(self, post, session):
+
+		error = []
+		destination = post['destination']
+		description = post['description']
+		start_date = post["start_date"]
+		end_date = post ['end_date']
+
+		if (len(destination) == 0) or (len(description) == 0) or (len(start_date) == 0) or (len(end_date) == 0):
+			errors.append("Cannot be blank")
+		else:
+			user = User.objects.filter(id=session)
+			new_trip_object = Trip.objects.create(destination=destination, description=description, start_date=start_date, end_date=end_date, user=user[0], participant=user[0])
+			print new_trip_object
+			return (new_trip_object)
+
+	def join_trip(self, session, id):
+		user = User.objects.filter(id=session)
+		tripObject = Trip.objects.filter(id=id) # Returns a list
+		participant = User.objects.get(id=session) #Returns an object
+		unwrapTrip = tripObject[0]
+
+		join_schedule = Trip.objects.create(destination=unwrapTrip.destination, description=unwrapTrip.description, start_date=unwrapTrip.start_date, end_date=unwrapTrip.end_date, user=unwrapTrip.user, participant=user[0] )
+		print unwrapTrip.user, "7"*300
+
+		return(join_schedule)
+
+
+
+
+
 class User(models.Model):
 	first_name = models.CharField(max_length=45, blank=True, null=True)
 	last_name = models.CharField(max_length=45, blank=True, null=True)
@@ -79,6 +111,31 @@ class User(models.Model):
 	updated_at = models.DateTimeField(auto_now = True)
 	objects = UserManager()
 
+			# -----login/registration------
+
+class Trip(models.Model):
+	destination = models.CharField(max_length=100, null=True)
+	description = models.CharField(max_length=1000, null=True)
+	start_date=models.DateTimeField(null=True)
+	end_date=models.DateTimeField(null=True)
+	created_at = models.DateTimeField(auto_now_add = True)
+	updated_at = models.DateTimeField(auto_now = True)
+	participant = models.ForeignKey('User', null=True, related_name="tripparticipant")
+	user = models.ForeignKey('User', null=True, related_name="tripuser")
+	objects = TripManager()
+	class Meta:
+		unique_together= (('user', 'participant'),)
 
 
-		# -----login/registration------
+# class Schedule(models.Model):
+# 	schedule = models.CharField(max_length=1000, null=True)
+# 	trip = models.ForeignKey('Trip', related_name ="tripschedule")
+# 	user = models.ForeignKey('User', related_name ="userschedule")
+# 	created_at = models.DateTimeField(auto_now_add = True)
+# 	updated_at = models.DateTimeField(auto_now = True)
+# 	objects = TripManager()
+
+
+
+
+
